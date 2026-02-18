@@ -46,50 +46,45 @@ export const AuthProvider = ({ children }) => {
         navigate('/login')
     }
 
-    let updateToken=async ()=>{
-        console.log('token updated!');
-        console.log('update token called');
-        let response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({'refresh':authtokens?.refresh}),
-        });
+    // let updateToken=async ()=>{
+    //     console.log('token updated!');
+    //     console.log('update token called');
+    //     let response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({'refresh':authtokens?.refresh}),
+    //     });
 
-        let data = await response.json();
-        if (response.status === 200) {
-            setauthtokens(data);
-            setUser(jwtDecode(data.access));
-            localStorage.setItem("authtokens", JSON.stringify(data));
-        } else {
-            logoutUser()
-        }
+    //     let data = await response.json();
+    //     if (response.status === 200) {
+    //         setauthtokens(data);
+    //         setUser(jwtDecode(data.access));
+    //         localStorage.setItem("authtokens", JSON.stringify(data));
+    //     } else {
+    //         logoutUser()
+    //     }
 
-        if(loading){
-            setloading(false)
-        }
-    }
+    //     if(loading){
+    //         setloading(false)
+    //     }
+    // }
 
     const contextData = {
         authtokens,
         user,
         loginUser,
         logoutUser,
+        setauthtokens,
+        setUser,
     };
 
     useEffect(()=>{
-        if(loading){
-            updateToken()
+        if(authtokens){
+            setUser(jwtDecode(authtokens.access))
         }
-        let fourminutes=1000*60*4;
-        let interval=setInterval(()=>{
-            if(authtokens){
-                updateToken()
-            }
-        },fourminutes)
-        return ()=> clearInterval(interval)
-
+        setloading(false)
     },[authtokens,loading])
 
   return (

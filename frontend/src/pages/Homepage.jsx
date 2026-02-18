@@ -1,26 +1,17 @@
 import React, { useState,useEffect ,useContext} from 'react'
 import AuthContext from '../context/AuthContext'
-
+import useAxios from '../utils/useAxios'
 function Homepage() {
   let [notes,setnotes]=useState([])
   
   let {authtokens,logoutUser}=useContext(AuthContext)
 
+  let api=useAxios()
+
   let getNotes=async ()=>{
-    if (!authtokens) return
-    let response=await fetch('http://127.0.0.1:8000/api/notes/',{
-      method:'GET',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer ' + String(authtokens.access)
-      }
-    })
-    let data= await response.json()
+    let response=await api.get('/api/notes/')
     if(response.status===200){
-      setnotes(data)
-    }
-    else if(response.statusText==='Unauthorized'){
-      logoutUser()
+      setnotes(response.data)
     }
   
   }
