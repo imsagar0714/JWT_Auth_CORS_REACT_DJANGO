@@ -38,26 +38,6 @@ This project demonstrates how modern authentication works in production-level ap
 
 ---
 
-## 📂 Project Structure
-
-jwt-auth-project/
-│
-├── backend/
-│ ├── api/
-│ ├── project/
-│ ├── manage.py
-│
-├── frontend/
-│ ├── src/
-│ │ ├── context/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ ├── utils/
-│ │ └── App.js
-│
-└── README.md
-
-
 ---
 
 # ⚙️ Backend Setup (Django)
